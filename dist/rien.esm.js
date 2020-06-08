@@ -1,5 +1,5 @@
 /*!
- * rein v0.0.2
+ * rein v0.0.3
  * (c) 2020 Jacob Schatz
  * @license MIT
  */

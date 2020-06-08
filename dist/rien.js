@@ -1,16 +1,13 @@
 /*!
- * rein v0.0.1
+ * rein v0.0.3
  * (c) 2020 Jacob Schatz
  * @license MIT
  */
 (function (global, factory) {
-  typeof exports === "object" && typeof module !== "undefined"
-    ? (module.exports = factory())
-    : typeof define === "function" && define.amd
-    ? define(factory)
-    : ((global = global || self), (global.Rien = factory()));
-})(this, function () {
-  "use strict";
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = global || self, global.Rien = factory());
+}(this, (function () { 'use strict';
 
   let Vue;
   let viewModels;
@@ -18,6 +15,10 @@
   let vmState = {};
   let vm;
   let baseURL = "";
+
+  function leftTrimSlash(url) {
+    return url.charAt(0) === "/" ? url.substring(1) : url;
+  }
 
   function generateComputed(obj) {
     if (!obj) {
@@ -87,7 +88,7 @@
       if (!serviceKeys.length) return;
       serviceKeys.forEach(function (serviceKey) {
         const service = viewModels[viewModelKey].service[serviceKey];
-        const serviceBaseRoute = `${baseURL}/${viewModelKey}`;
+        const serviceBaseRoute = `${baseURL}/${leftTrimSlash(service.url)}`;
         if (!service.index) {
           service.index = function () {
             return fetch(serviceBaseRoute).then((res) => res.json());
@@ -147,7 +148,7 @@
       buildState();
       createVM();
       if (options.rien.baseURL) {
-        baseURL = options.rien.baseURL;
+        baseURL = options.rien.baseURL.replace(/\/+$/, "");
         createServices();
       }
     } else if (options.parent && viewModels[options.name]) {
@@ -184,4 +185,5 @@
   };
 
   return index;
-});
+
+})));
