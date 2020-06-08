@@ -3,7 +3,7 @@
  * (c) 2020 Jacob Schatz
  * @license MIT
  */
-'use strict';
+"use strict";
 
 let Vue;
 let viewModels;

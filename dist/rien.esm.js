@@ -1,5 +1,5 @@
 /*!
- * rein v0.0.1
+ * rein v0.0.2
  * (c) 2020 Jacob Schatz
  * @license MIT
  */
@@ -9,6 +9,10 @@ let namespaced = false;
 let vmState = {};
 let vm;
 let baseURL = "";
+
+function leftTrimSlash(url) {
+  return url.charAt(0) === "/" ? url.substring(1) : url;
+}
 
 function generateComputed(obj) {
   if (!obj) {
@@ -78,38 +82,48 @@ function createServices() {
     if (!serviceKeys.length) return;
     serviceKeys.forEach(function (serviceKey) {
       const service = viewModels[viewModelKey].service[serviceKey];
-      const serviceBaseRoute = `${baseURL}/${viewModelKey}`;
-      service.index = function () {
-        return fetch(serviceBaseRoute).then((res) => res.json());
-      };
-      service.create = function (data) {
-        return fetch(serviceBaseRoute, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify(data),
-        }).then((res) => res.json());
-      };
-      service.show = function (id) {
-        return fetch(`${serviceBaseRoute}/${id}`).then((res) => res.json());
-      };
-      service.update = function (id, data) {
-        return fetch(`${serviceBaseRoute}/${id}`, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          method: "PUT",
-          body: JSON.stringify(data),
-        }).then((res) => res.json());
-      };
-      service.delete = function (id) {
-        return fetch(`${serviceBaseRoute}/${id}`, {
-          method: "DELETE",
-        }).then((res) => res.json());
-      };
+      const serviceBaseRoute = `${baseURL}/${leftTrimSlash(service.url)}`;
+      if (!service.index) {
+        service.index = function () {
+          return fetch(serviceBaseRoute).then((res) => res.json());
+        };
+      }
+      if (!service.create) {
+        service.create = function (data) {
+          return fetch(serviceBaseRoute, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(data),
+          }).then((res) => res.json());
+        };
+      }
+      if (!service.show) {
+        service.show = function (id) {
+          return fetch(`${serviceBaseRoute}/${id}`).then((res) => res.json());
+        };
+      }
+      if (!service.update) {
+        service.update = function (id, data) {
+          return fetch(`${serviceBaseRoute}/${id}`, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify(data),
+          }).then((res) => res.json());
+        };
+      }
+      if (!service.delete) {
+        service.delete = function (id) {
+          return fetch(`${serviceBaseRoute}/${id}`, {
+            method: "DELETE",
+          }).then((res) => res.json());
+        };
+      }
     });
   });
 }
@@ -128,7 +142,7 @@ function reinInit() {
     buildState();
     createVM();
     if (options.rien.baseURL) {
-      baseURL = options.rien.baseURL;
+      baseURL = options.rien.baseURL.replace(/\/+$/, "");
       createServices();
     }
   } else if (options.parent && viewModels[options.name]) {

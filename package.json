@@ -1,6 +1,6 @@
 {
   "name": "rien",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple async state management",
   "main": "dist/rien.common.js",
   "module": "dist/rien.esm.js",

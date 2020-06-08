@@ -4,10 +4,13 @@
  * @license MIT
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.Rien = factory());
-}(this, (function () { 'use strict';
+  typeof exports === "object" && typeof module !== "undefined"
+    ? (module.exports = factory())
+    : typeof define === "function" && define.amd
+    ? define(factory)
+    : ((global = global || self), (global.Rien = factory()));
+})(this, function () {
+  "use strict";
 
   let Vue;
   let viewModels;
@@ -85,12 +88,12 @@
       serviceKeys.forEach(function (serviceKey) {
         const service = viewModels[viewModelKey].service[serviceKey];
         const serviceBaseRoute = `${baseURL}/${viewModelKey}`;
-        if(!service.index) {
+        if (!service.index) {
           service.index = function () {
             return fetch(serviceBaseRoute).then((res) => res.json());
           };
         }
-        if(!service.create) {
+        if (!service.create) {
           service.create = function (data) {
             return fetch(serviceBaseRoute, {
               headers: {
@@ -102,12 +105,12 @@
             }).then((res) => res.json());
           };
         }
-        if(!service.show) {
+        if (!service.show) {
           service.show = function (id) {
             return fetch(`${serviceBaseRoute}/${id}`).then((res) => res.json());
           };
         }
-        if(!service.update) {
+        if (!service.update) {
           service.update = function (id, data) {
             return fetch(`${serviceBaseRoute}/${id}`, {
               headers: {
@@ -119,7 +122,7 @@
             }).then((res) => res.json());
           };
         }
-        if(!service.delete) {
+        if (!service.delete) {
           service.delete = function (id) {
             return fetch(`${serviceBaseRoute}/${id}`, {
               method: "DELETE",
@@ -181,5 +184,4 @@
   };
 
   return index;
-
-})));
+});
