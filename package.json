@@ -1,0 +1,32 @@
+{
+  "name": "rien",
+  "version": "0.0.1",
+  "description": "Simple async state management",
+  "main": "dist/rien.common.js",
+  "module": "dist/rien.esm.js",
+  "unpkg": "dist/rien.js",
+  "scripts": {
+    "build": "rollup ./src/index.js --file ./dist/rien.js --format umd --name \"Rien\" --banner \"$(./build/banner.js)\"",
+    "build-common": "rollup ./src/index.js --file ./dist/rien.common.js --format cjs --name \"Rien\" --banner \"$(./build/banner.js)\"",
+    "build-es": "rollup ./src/index.js --file ./dist/rien.esm.js --format es --name \"Rien\" --banner \"$(./build/banner.js)\"",
+    "build-minify": "rollup ./src/index.js --file ./dist/rien.min.js --format umd --name \"Rien\" -p terser --banner \"$(./build/banner.js)\"",
+    "build-all": "yarn build && yarn build-common && yarn build-es && yarn build-minify",
+    "watch": "rollup ./src/index.js --watch --file ./dist/rien.esm.js --format es --name \"Rien\" --banner \"$(./build/banner.js)\"",
+    "lint": "prettier --write ."
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Jacob Schatz",
+  "license": "MIT",
+  "private": true,
+  "peerDependencies": {
+    "vue": "^2.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5",
+    "rollup": "^2.13.1",
+    "rollup-plugin-terser": "^6.1.0"
+  },
+  "dependencies": {}
+}
