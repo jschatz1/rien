@@ -1,6 +1,6 @@
 {
   "name": "rien",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple async state management",
   "main": "dist/rien.common.js",
   "module": "dist/rien.esm.js",
@@ -19,7 +19,7 @@
   ],
   "author": "Jacob Schatz",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "peerDependencies": {
     "vue": "^2.0.0"
   },

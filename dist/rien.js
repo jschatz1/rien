@@ -85,37 +85,47 @@
       serviceKeys.forEach(function (serviceKey) {
         const service = viewModels[viewModelKey].service[serviceKey];
         const serviceBaseRoute = `${baseURL}/${viewModelKey}`;
-        service.index = function () {
-          return fetch(serviceBaseRoute).then((res) => res.json());
-        };
-        service.create = function (data) {
-          return fetch(serviceBaseRoute, {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify(data),
-          }).then((res) => res.json());
-        };
-        service.show = function (id) {
-          return fetch(`${serviceBaseRoute}/${id}`).then((res) => res.json());
-        };
-        service.update = function (id, data) {
-          return fetch(`${serviceBaseRoute}/${id}`, {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            method: "PUT",
-            body: JSON.stringify(data),
-          }).then((res) => res.json());
-        };
-        service.delete = function (id) {
-          return fetch(`${serviceBaseRoute}/${id}`, {
-            method: "DELETE",
-          }).then((res) => res.json());
-        };
+        if(!service.index) {
+          service.index = function () {
+            return fetch(serviceBaseRoute).then((res) => res.json());
+          };
+        }
+        if(!service.create) {
+          service.create = function (data) {
+            return fetch(serviceBaseRoute, {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              method: "POST",
+              body: JSON.stringify(data),
+            }).then((res) => res.json());
+          };
+        }
+        if(!service.show) {
+          service.show = function (id) {
+            return fetch(`${serviceBaseRoute}/${id}`).then((res) => res.json());
+          };
+        }
+        if(!service.update) {
+          service.update = function (id, data) {
+            return fetch(`${serviceBaseRoute}/${id}`, {
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              method: "PUT",
+              body: JSON.stringify(data),
+            }).then((res) => res.json());
+          };
+        }
+        if(!service.delete) {
+          service.delete = function (id) {
+            return fetch(`${serviceBaseRoute}/${id}`, {
+              method: "DELETE",
+            }).then((res) => res.json());
+          };
+        }
       });
     });
   }
